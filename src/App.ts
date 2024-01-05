@@ -16,7 +16,6 @@ Object.keys(Data.EXPLORERS).forEach((explorerName) => {
   };
 });
 
-// Set up routing by connecting components to routes
 m.route(document.body, "/", {
   '/': { view: () => m(MainPage, { state: state }) },
   '/tracker': { view: () => m(TrackerPage, { state: state }) },

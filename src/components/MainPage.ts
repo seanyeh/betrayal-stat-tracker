@@ -5,8 +5,6 @@ import images from "../img/explorers/*.png";
 
 export default class MainPage {
   view() {
-    console.log(images);
-
     return [
       m("h1", "Betrayal at House on the Hill Stat Tracker"),
 
