@@ -4,12 +4,14 @@ import images from "../img/explorers/*.png";
 import Data from "../Data";
 
 export default class TrackerPage {
-  constructor() {
+  constructor({ attrs: { state } }) {
     this.explorerName = m.route.param("name");
-    this.explorer = Data.EXPLORERS[this.explorerName];
+
+    const explorer = Data.EXPLORERS[this.explorerName];
+    explorer.name = this.explorerName;
 
     this.statTrackers = ["speed", "might", "sanity", "knowledge"].map((statName) => (
-      new StatTracker(this.explorer, statName)
+      new StatTracker(explorer, statName, state)
     ));
   }
 
@@ -36,28 +38,30 @@ enum StatType {
 }
 
 class StatTracker {
-  constructor(explorer, statName) {
+  constructor(explorer, statName, state) {
     this.statName = statName;
+    this.explorerName = explorer.name;
 
     const statType = StatType[statName];
     this.stats = explorer.stats[statType];
     this.startIndex = explorer.defaultStatIndexes[statType];
-    this.currentIndex = this.startIndex;
+
+    this.state = state;
   }
 
-  reset() {
-    this.currentIndex = startIndex;
+  get currentIndex() {
+    return this.state[this.explorerName][this.statName];
   }
 
   increment() {
     if (this.currentIndex <= this.stats.length - 2) {
-      this.currentIndex++;
+      this.state[this.explorerName][this.statName]++;
     }
   }
 
   decrement() {
     if (this.currentIndex >= 1) {
-      this.currentIndex--;
+      this.state[this.explorerName][this.statName]--;
     }
   }
 
